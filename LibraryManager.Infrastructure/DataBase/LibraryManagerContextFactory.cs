@@ -13,21 +13,22 @@ public class LibraryManagerContextFactory
   
   public LibraryManagerContext CreateDbContext(string[] args)
   {
-    // 1️⃣ Charger la configuration
+    var apiPath = Path.Combine(Directory.GetCurrentDirectory(), "../LibraryManager.Api");
+    
     IConfiguration configuration = new ConfigurationBuilder()
       .SetBasePath(Directory.GetCurrentDirectory())
       .AddJsonFile("appsettings.json")
       .AddJsonFile("appsettings.Development.json", optional: true)
       .Build();
 
-    // 2️⃣ Récupérer la connection string
+    
     var connectionString = configuration.GetConnectionString("Default");
 
-    // 3️⃣ Construire les options
+    
     var optionsBuilder = new DbContextOptionsBuilder<LibraryManagerContext>();
     optionsBuilder.UseSqlServer(connectionString);
 
-    // 4️⃣ Créer le DbContext
+    
     return new LibraryManagerContext(optionsBuilder.Options); 
   }
 }
