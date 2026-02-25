@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DataBase\Configurations\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\LibraryManager.Core\LibraryManager.Core.csproj" />
       <ProjectReference Include="..\LibraryManager.Domain\LibraryManager.Domain.csproj" />
     </ItemGroup>
