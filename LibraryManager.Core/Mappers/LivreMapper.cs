@@ -28,7 +28,6 @@ public static class LivreMapper
     {
       Nom = entity.Nom,
       Auteur = entity.Auteur,
-      Id =  entity.Id,
       NbPages = entity.NbPages,
       DateDeSortie =  entity.DateDeSortie,
       DateCreation =  entity.DateCreation,

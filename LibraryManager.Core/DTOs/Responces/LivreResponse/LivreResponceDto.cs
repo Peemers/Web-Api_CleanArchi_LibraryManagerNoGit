@@ -4,7 +4,7 @@ namespace LibraryManager.Core.DTOs.Responces.LivreResponse;
 
 public class LivreResponceDto
 {
-  public Guid Id { get; set; }
+  
   public required string Nom { get; set; } 
   public required string Auteur { get; set; }
   public int NbPages { get; set; }

@@ -6,10 +6,10 @@ using LibraryManager.Core.Interfaces.Repositories;
 using LibraryManager.Core.Interfaces.Services;
 using LibraryManager.Core.Mappers;
 using LibraryManager.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManager.API.Controllers;
-
 [ApiController]
 [Route("api/[controller]")]
 public class LivreController : ControllerBase
@@ -22,6 +22,7 @@ public class LivreController : ControllerBase
   }
 
   [HttpGet]
+  [AllowAnonymous]
   public async Task<ActionResult<IEnumerable<LivreResponceDto>>> GetLivres()
   {
     var livres = await _livreService.GetAllAsync();
@@ -29,6 +30,7 @@ public class LivreController : ControllerBase
   }
 
   [HttpPost]
+  [Authorize(Roles = "Admin")]
   public async Task<IActionResult> PostLivre(LivreRequestDTO dto)
   {
     // appelle de la méthode que l'on a créée spécifiquement pour les DTO
@@ -43,6 +45,7 @@ public class LivreController : ControllerBase
   }
 
   [HttpGet("{id}")]
+  [Authorize]
   public async Task<IActionResult> GetById(Guid id)
   {
     var livre = await _livreService.GetByIdAsync(id);
@@ -54,6 +57,7 @@ public class LivreController : ControllerBase
   }
 
   [HttpPut("{id}")]
+  [Authorize]
   public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] LivreRequestDTO dto)
   {
     Livre? livreExist = await _livreService.GetByIdAsync(id);
@@ -69,6 +73,7 @@ public class LivreController : ControllerBase
   }
 
   [HttpDelete("{id}")]
+  [Authorize(Roles = "Admin")]
   public async Task<IActionResult> DeleteAsync(Guid id)
   {
     var livre = await _livreService.GetByIdAsync(id);

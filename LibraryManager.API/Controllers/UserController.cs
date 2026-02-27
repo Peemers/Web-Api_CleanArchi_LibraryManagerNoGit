@@ -2,6 +2,7 @@
 using LibraryManager.Core.DTOs.Requests.UserRequest;
 using LibraryManager.Core.DTOs.Responces.UserResponse;
 using LibraryManager.Core.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManager.API.Controllers;
@@ -18,6 +19,7 @@ public class UserController : ControllerBase
   }
 
   [HttpGet ("GetUsers")]
+  [Authorize]
   public async Task<ActionResult<IEnumerable<UserResponceDto>>> GetUsers()
   {
     var usersDto = await _userService.GetAllAsync();
