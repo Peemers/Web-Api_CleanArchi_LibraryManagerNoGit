@@ -15,7 +15,7 @@ public class Result<T>
   
   public static Result<T> Success(T value) 
   {
-    return new Result<T>(true, value, null);
+    return new Result<T>(true, value, "");
   }
 
   public static Result<T> Failure(string message) 
