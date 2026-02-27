@@ -1,4 +1,5 @@
-﻿using LibraryManager.Core.DTOs.Requests.UserRequest;
+﻿using LibraryManager.Core.Common;
+using LibraryManager.Core.DTOs.Requests.UserRequest;
 using LibraryManager.Core.DTOs.Responces.UserResponse;
 using LibraryManager.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +27,13 @@ public class UserController : ControllerBase
   [HttpPost("Login")]
   public async Task<ActionResult<LoginResponceDto>> Login([FromBody] LoginRequestDto dto)
   {
-    var result = await _userService.LoginAsync(dto);
+    Result<LoginResponceDto> result = await _userService.LoginAsync(dto);
+  
     if (!result.IsSuccess)
     {
       return Unauthorized(result.ErrorMessage);
     }
+  
     return Ok(result.Value);
   }
 

@@ -1,6 +1,4 @@
-﻿using LibraryManager.Core.DTOs.Requests;
-using LibraryManager.Core.DTOs.Requests.UserRequest;
-using LibraryManager.Core.DTOs.Responces;
+﻿using LibraryManager.Core.DTOs.Requests.UserRequest;
 using LibraryManager.Core.DTOs.Responces.UserResponse;
 using LibraryManager.Domain.Entities;
 
@@ -13,20 +11,20 @@ public static class UserMappers
     return new User
     {
       Email = dto.Email,
-      PasswordHash = dto.Password,
+      PasswordHash = string.Empty,
       FirstName = dto.FirstName ?? string.Empty,
       LastName = dto.LastName ?? string.Empty,
     };
   }
 
-  public static UserResponceDto ToResponseDto(this User dto)
+  public static UserResponceDto ToResponseDto(this User entity)
   {
     return new UserResponceDto
     {
-      Id = dto.Id,
-      Email = dto.Email,
-      FirstName = dto.FirstName,
-      LastName = dto.LastName,
+      Id = entity.Id,
+      Email = entity.Email,
+      FirstName = entity.FirstName ?? string.Empty,
+      LastName = entity.LastName ?? string.Empty,
     };
   }
 }

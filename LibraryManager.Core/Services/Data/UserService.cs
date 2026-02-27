@@ -83,30 +83,29 @@ public class UserService(
 
   public async Task<Result<LoginResponceDto>> LoginAsync(LoginRequestDto dto)
   {
-    Console.WriteLine($"Tentative de login pour : {dto.Email}");
-    Console.WriteLine($"Mot de passe reçu (clair) : {dto.Password}");
-    
     User? user = await userRepository.GetUserByEmail(dto.Email);
 
     if (user == null)
     {
-      Console.WriteLine("ERREUR : Utilisateur non trouvé en base.");
       return Result<LoginResponceDto>.Failure("Email ou MDP incorrect");
     }
-    Console.WriteLine($"Hash en base : {user.PasswordHash}");
+
     bool isPasswordValid = passwordHasher.Verify(dto.Password, user.PasswordHash);
-    Console.WriteLine($"Résultat vérification : {isPasswordValid}");
+  
     if (!isPasswordValid)
     {
       return Result<LoginResponceDto>.Failure("Email ou MDP incorrect");
     }
 
     string token = jwtProvider.Generate(user);
-    return Result<LoginResponceDto>.Success(new LoginResponceDto
+  
+    LoginResponceDto loginResponse = new LoginResponceDto
     {
       User = user.ToResponseDto(),
       Token = token
-    });
+    };
+
+    return Result<LoginResponceDto>.Success(loginResponse);
   }
 
   public async Task<UserResponceDto> UpdateEmailAsync(Guid userId, string nouveauEmail)

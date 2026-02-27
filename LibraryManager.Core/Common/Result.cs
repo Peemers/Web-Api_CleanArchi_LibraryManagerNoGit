@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-
-namespace LibraryManager.Core.Common;
+﻿namespace LibraryManager.Core.Common;
 
 public class Result<T>
 {
@@ -10,11 +8,18 @@ public class Result<T>
 
   private Result(bool isSuccess, T? value, string errorMessage)
   {
-    isSuccess = isSuccess;
-    value = value;
-    ErrorMessage = errorMessage;
+    this.IsSuccess = isSuccess;
+    this.Value = value;
+    this.ErrorMessage = errorMessage;
   }
   
-  public static Result<T> Success(T value) => new Result<T>(true, value, null);
-  public static Result<T> Failure(string message) => new Result<T>(false, default, message);
+  public static Result<T> Success(T value) 
+  {
+    return new Result<T>(true, value, null);
+  }
+
+  public static Result<T> Failure(string message) 
+  {
+    return new Result<T>(false, default, message);
+  }
 }
