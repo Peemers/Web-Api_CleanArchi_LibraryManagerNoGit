@@ -39,16 +39,26 @@ public class UserService(
 
   public async Task<UserResponceDto> CreateByDtoAsync(RegisterRequestDto dto)
   {
+    // LOG DE CONTRÔLE
+    Console.WriteLine($"--- INSCRIPTION ---");
+    Console.WriteLine($"Email à inscrire : {dto.Email}");
+    Console.WriteLine($"Mot de passe reçu à hacher : {dto.Password}");
+
     if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
     {
       throw new ArgumentException("un mail et un mdp sont nécessaires");
     }
 
     var userEntity = dto.ToEntity();
-    userEntity.PasswordHash = passwordHasher.Hash(dto.Password)!;
+    
+    // On s'assure qu'on hache bien ce qu'on a reçu
+    string hashed = passwordHasher.Hash(dto.Password)!;
+    Console.WriteLine($"Hash généré pour la base : {hashed}");
+    
+    userEntity.PasswordHash = hashed;
+    
     var createdUser = await base.AddAsync(userEntity);
-
-    return createdUser.ToResponseDto(); // Retourne le DTO
+    return createdUser.ToResponseDto();
   }
 
   public async Task<UserResponceDto> ChangeRoleAsync(Guid userId, UsersRoles role)
@@ -78,7 +88,15 @@ public class UserService(
     
     User? user = await userRepository.GetUserByEmail(dto.Email);
 
-    if (user == null || !passwordHasher.Verify(dto.Password, user.PasswordHash))
+    if (user == null)
+    {
+      Console.WriteLine("ERREUR : Utilisateur non trouvé en base.");
+      return Result<LoginResponceDto>.Failure("Email ou MDP incorrect");
+    }
+    Console.WriteLine($"Hash en base : {user.PasswordHash}");
+    bool isPasswordValid = passwordHasher.Verify(dto.Password, user.PasswordHash);
+    Console.WriteLine($"Résultat vérification : {isPasswordValid}");
+    if (!isPasswordValid)
     {
       return Result<LoginResponceDto>.Failure("Email ou MDP incorrect");
     }

@@ -25,8 +25,6 @@ builder.Services.AddScoped<IEmpruntRepository, EmpruntRepository>();
 builder.Services.AddScoped<IEmpruntService, EmpruntService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
-builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
 Console.WriteLine($"CORS configurés pour : {string.Join(", ", allowedOrigins ?? [])}");
@@ -55,8 +53,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       ValidateAudience = true,
       ValidateLifetime = true,
       ValidateIssuerSigningKey = true,
-      ValidIssuer = builder.Configuration["JwtIssuer"],
-      ValidAudience = builder.Configuration["JwtAudience"],
+      ValidIssuer = builder.Configuration["Jwt:Issuer"],
+      ValidAudience = builder.Configuration["Jwt:Audience"],
       IssuerSigningKey = new SymmetricSecurityKey(
         Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
