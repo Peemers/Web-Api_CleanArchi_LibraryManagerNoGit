@@ -1,100 +1,100 @@
-﻿############################
-# .NET / Build
-############################
-bin/
-obj/
-out/
-artifacts/
-TestResults/
-coverage/
-*.dll
-*.exe
-*.pdb
-
-############################
-# Rider / JetBrains
-############################
-.idea/
-*.sln.iml
-*.DotSettings.user
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
-
-############################
-# Visual Studio (au cas où)
-############################
-.vs/
-
-############################
-# OS
-############################
-.DS_Store
-Thumbs.db
-desktop.ini
-
-############################
-# Logs
-############################
-logs/
-*.log
-
-############################
-# Secrets / Config
-############################
-appsettings.json
-appsettings.*.json
-secrets.json
-*.secret.json
-.env
-.env.*
-*.key
-*.pem
-*.pfx
-*.cer
-*.crt
-
-############################
-# Publish
-############################
-publish/
-PublishProfiles/
-
-############################
-# Migrations temporaires
-############################
-**/Migrations/*.cs
-!**/Migrations/*Snapshot.cs
-
-############################
-# Node (si frontend associé)
-############################
-node_modules/
-npm-debug.log*
-yarn-error.log*
-
-############################
-# Docker
-############################
-docker-compose.override.yml
-.env.docker
-
-############################
-# Tests
-############################
-**/TestResults/
-
-############################
-# Clean Archi spécifique
-############################
-**/Infrastructure/Persistence/Seeds/*.json
-**/Infrastructure/Persistence/Seeds/*.csv
-
-############################
-# Fichiers temporaires
-############################
-*.tmp
-*.bak
-*.old
-*.swp
+﻿#############################
+## .NET / Build
+#############################
+#bin/
+#obj/
+#out/
+#artifacts/
+#TestResults/
+#coverage/
+#*.dll
+#*.exe
+#*.pdb
+#
+#############################
+## Rider / JetBrains
+#############################
+#.idea/
+#*.sln.iml
+#*.DotSettings.user
+#*.user
+#*.suo
+#*.userosscache
+#*.sln.docstates
+#
+#############################
+## Visual Studio (au cas où)
+#############################
+#.vs/
+#
+#############################
+## OS
+#############################
+#.DS_Store
+#Thumbs.db
+#desktop.ini
+#
+#############################
+## Logs
+#############################
+#logs/
+#*.log
+#
+#############################
+## Secrets / Config
+#############################
+#appsettings.json
+#appsettings.*.json
+#secrets.json
+#*.secret.json
+#.env
+#.env.*
+#*.key
+#*.pem
+#*.pfx
+#*.cer
+#*.crt
+#
+#############################
+## Publish
+#############################
+#publish/
+#PublishProfiles/
+#
+#############################
+## Migrations temporaires
+#############################
+#**/Migrations/*.cs
+#!**/Migrations/*Snapshot.cs
+#
+#############################
+## Node (si frontend associé)
+#############################
+#node_modules/
+#npm-debug.log*
+#yarn-error.log*
+#
+#############################
+## Docker
+#############################
+#docker-compose.override.yml
+#.env.docker
+#
+#############################
+## Tests
+#############################
+#**/TestResults/
+#
+#############################
+## Clean Archi spécifique
+#############################
+#**/Infrastructure/Persistence/Seeds/*.json
+#**/Infrastructure/Persistence/Seeds/*.csv
+#
+#############################
+## Fichiers temporaires
+#############################
+#*.tmp
+#*.bak
+#*.old
+#*.swp
