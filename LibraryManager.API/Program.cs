@@ -33,14 +33,18 @@ builder.Services.AddCors(options =>
 {
   options.AddPolicy("AllowAngular", policy =>
   {
-    policy.WithOrigins(allowedOrigins ?? Array.Empty<string>())
+    policy.WithOrigins("http://localhost:4200")
       .AllowAnyMethod()
       .AllowAnyHeader();
   });
 });
 
 //Services de base
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+  .AddJsonOptions(options =>
+  {
+    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+  });
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();

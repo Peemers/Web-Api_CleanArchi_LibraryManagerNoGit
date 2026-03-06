@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using LibraryManager.Domain.Entities;
+﻿using LibraryManager.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -19,7 +19,7 @@ public class UserController : ControllerBase
   }
 
   [HttpGet ("GetUsers")]
-  [Authorize]
+  
   public async Task<ActionResult<IEnumerable<UserResponceDto>>> GetUsers()
   {
     var usersDto = await _userService.GetAllAsync();
@@ -27,6 +27,7 @@ public class UserController : ControllerBase
   }
 
   [HttpPost("Login")]
+  [AllowAnonymous]
   public async Task<ActionResult<LoginResponceDto>> Login([FromBody] LoginRequestDto dto)
   {
     Result<LoginResponceDto> result = await _userService.LoginAsync(dto);
