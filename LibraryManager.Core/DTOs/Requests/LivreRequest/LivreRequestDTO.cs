@@ -6,6 +6,7 @@ public class LivreRequestDTO
 {
   public required string Nom { get; set; }
   public required string Auteur { get; set; }
+  public required string Resume { get; set; }
   public int NbPages { get; set; }
   public DateTime DateDeSortie { get; set; }
 }
