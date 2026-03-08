@@ -10,7 +10,7 @@ public class Livre : BaseEntity
   public string Resume { get; set; } = string.Empty;
   public DateTime DateDeSortie { get; set; }
   public LivreStatut StatutLivre { get; set; }
-  public string UrlCouverture { get; set; } = string.Empty;
+  public string? UrlCouverture { get; set; }
 
   public virtual ICollection<Emprunt> HistoriqueEmprunts { get; set; } = new List<Emprunt>();
 }

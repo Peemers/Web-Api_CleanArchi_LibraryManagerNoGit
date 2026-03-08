@@ -29,5 +29,5 @@ public class LivreRequestDTO
   [Required]
   public LivreStatut StatutLivre { get; set; }
   
-  public string? UrlCouverture { get; set; } = string.Empty;
+  public string? UrlCouverture { get; set; }
 }
