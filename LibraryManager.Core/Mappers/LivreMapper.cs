@@ -20,6 +20,7 @@ public static class LivreMapper
       Resume = dto.Resume,
       DateDeSortie = dto.DateDeSortie,
       UrlCouverture =  dto.UrlCouverture,
+      StatutLivre =  dto.StatutLivre
     };
   }
 

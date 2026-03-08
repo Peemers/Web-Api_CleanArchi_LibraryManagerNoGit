@@ -26,5 +26,8 @@ public class LivreRequestDTO
   [Required]
   public DateTime DateDeSortie { get; set; }
   
-  public string UrlCouverture { get; set; } = string.Empty;
+  [Required]
+  public LivreStatut StatutLivre { get; set; }
+  
+  public string? UrlCouverture { get; set; } = string.Empty;
 }
