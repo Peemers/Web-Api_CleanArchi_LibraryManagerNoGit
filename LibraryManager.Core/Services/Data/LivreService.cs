@@ -67,8 +67,8 @@ public class LivreService(ILivreRepository livreRepository)
       throw new ArgumentException("Pas d'espace pour auteur");
     }
 
-    var livres = dto.ToEntity();
-    livres.StatutLivre = LivreStatut.Disponible;
+    Livre livres = dto.ToEntity();
+    //livres.StatutLivre = LivreStatut.Disponible;
     return await this.AddAsync(livres);
   }
 
@@ -83,7 +83,7 @@ public class LivreService(ILivreRepository livreRepository)
       throw new ArgumentException("Le nom et l'auteur sont obligatoires pour référencer un livre.");
     }
 
-    livre.StatutLivre = LivreStatut.Disponible;
+    //livre.StatutLivre = LivreStatut.Disponible;
 
     return await base.AddAsync(livre);
   }
