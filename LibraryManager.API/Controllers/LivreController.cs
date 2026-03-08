@@ -30,7 +30,7 @@ public class LivreController : ControllerBase
   }
 
   [HttpPost]
-  //[Authorize(Roles = "Admin")]
+  [Authorize(Roles = "Admin")]
   public async Task<IActionResult> PostLivre(LivreRequestDTO dto)
   {
     // appelle de la méthode que l'on a créée spécifiquement pour les DTO

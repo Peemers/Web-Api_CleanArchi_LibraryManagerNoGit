@@ -17,7 +17,8 @@ public class UserController : ControllerBase
   {
     _userService = userService;
   }
-
+  
+  [Authorize]
   [HttpGet ("GetUsers")]
   
   public async Task<ActionResult<IEnumerable<UserResponceDto>>> GetUsers()
@@ -39,7 +40,8 @@ public class UserController : ControllerBase
   
     return Ok(result.Value);
   }
-
+  
+  [Authorize]
   [HttpGet("email/{email}")]
   public async Task<ActionResult<UserResponceDto>> GetByEmail(string email)
   {
@@ -60,7 +62,7 @@ public class UserController : ControllerBase
       userDto
     );
   }
-
+  [Authorize]
   [HttpPut("{id}/email")]
   public async Task<ActionResult<UserResponceDto>> UpdateEmail(Guid id, [FromBody] UpdateEmailDto? dto)
   {
