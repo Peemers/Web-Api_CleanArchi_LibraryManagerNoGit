@@ -39,10 +39,6 @@ public class UserService(
 
   public async Task<UserResponceDto> CreateByDtoAsync(RegisterRequestDto dto)
   {
-    // LOG DE CONTRÔLE
-    Console.WriteLine($"--- INSCRIPTION ---");
-    Console.WriteLine($"Email à inscrire : {dto.Email}");
-    Console.WriteLine($"Mot de passe reçu à hacher : {dto.Password}");
 
     if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
     {
