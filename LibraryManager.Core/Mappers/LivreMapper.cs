@@ -19,6 +19,7 @@ public static class LivreMapper
       NbPages = dto.NbPages,
       Resume = dto.Resume,
       DateDeSortie = dto.DateDeSortie,
+      UrlCouverture =  dto.UrlCouverture,
     };
   }
 
