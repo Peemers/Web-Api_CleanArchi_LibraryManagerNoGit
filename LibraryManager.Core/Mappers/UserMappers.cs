@@ -1,6 +1,7 @@
 ﻿using LibraryManager.Core.DTOs.Requests.UserRequest;
 using LibraryManager.Core.DTOs.Responces.UserResponse;
 using LibraryManager.Domain.Entities;
+using LibraryManager.Domain.Enums;
 
 namespace LibraryManager.Core.Mappers;
 
@@ -25,6 +26,7 @@ public static class UserMappers
       Email = entity.Email,
       FirstName = entity.FirstName ?? string.Empty,
       LastName = entity.LastName ?? string.Empty,
+      Role = entity.Role,
     };
   }
 }

@@ -8,5 +8,7 @@ public class UserResponceDto
   public string Email { get; set; }  = string.Empty;
   public string FirstName { get; set; } =  string.Empty;
   public string LastName { get; set; } =  string.Empty;
+  public UsersRoles Role { get; set; }
+  
   public DateTime DateCreation { get; set; } =  DateTime.UtcNow;
 }
