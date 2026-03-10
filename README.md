@@ -78,5 +78,7 @@ Le projet est découpé en 4 couches principales :
 * **Mapping** : Transformation manuelle et efficace des entités vers les DTOs via des classes de mapping dédiées.
 * **Sécurité** : Protection des routes sensibles via des politiques d'autorisation basées sur les rôles (`Admin`, `User`).
 
+* Ce projet contient tous les secrets et string de connection etc mais rien n'est en ligne tout est local donc je me suis permis.
+
 ## 📄 Licence
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
