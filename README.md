@@ -1,95 +1,82 @@
-📚 LibraryManager API
+# 📚 LibraryManager API
 
-LibraryManager est une solution de gestion de bibliothèque moderne développée en .NET 10.0. Le projet suit les principes de la Clean Architecture pour garantir une séparation claire des responsabilités, une testabilité accrue et une maintenance facilitée.
-🏗️ Architecture du Projet
+LibraryManager est une API de gestion de bibliothèque développée en **.NET 10.0**. Le projet suit les principes de la **Clean Architecture** pour garantir une séparation claire des responsabilités, une maintenance facilitée et une scalabilité optimale.
 
-Le projet est structuré en quatre couches principales :
+## 🏗️ Architecture du Projet
 
-    LibraryManager.API : La couche de présentation (ASP.NET Core Web API). Elle contient les contrôleurs, les middlewares et la configuration de l'application.
+Le projet est découpé en 4 couches principales :
 
-    LibraryManager.Core : La couche de logique métier (Application). Elle définit les interfaces, les services, les DTOs (Data Transfer Objects) et les mappers.
+1.  **LibraryManager.API** : Couche de Présentation (Controllers, Middlewares, Configurations API).
+2.  **LibraryManager.Core** : Couche Application (Interfaces, Services, DTOs, Mappers, Logique métier).
+3.  **LibraryManager.Infrastructure** : Couche Data (DbContext, Repositories, Configurations EF Core).
+4.  **LibraryManager.Domain** : Couche Domaine (Entités de base, Enums).
 
-    LibraryManager.Domain : La couche de domaine. Elle contient les entités de base, les enums et la logique métier fondamentale.
+## 🚀 Technologies et Bibliothèques
 
-    LibraryManager.Infrastructure : La couche d'accès aux données et de services externes. Elle contient le contexte Entity Framework, les implémentations des répertoires et les configurations de base de données.
+* **Framework** : .NET 10.0
+* **ORM** : Entity Framework Core
+* **Base de Données** : SQL Server
+* **Sécurité** : 
+    * Authentification JWT (JSON Web Token)
+    * Hachage de mots de passe avec BCrypt
+* **Documentation** : Scalar (alternative moderne à Swagger)
+* **Pattern** : Repository Pattern & Dependency Injection
 
-🚀 Technologies Utilisées
+## 🛠️ Installation et Lancement
 
-    Framework : .NET 10.0
+1.  **Clonage du dépôt** :
+    ```bash
+    git clone <url-du-repo>
+    cd Web-Api_CleanArchi_LibraryManager
+    ```
 
-    ORM : Entity Framework Core
+2.  **Configuration de la base de données** :
+    Modifiez la chaîne de connexion `DefaultConnection` dans le fichier `LibraryManager.API/appsettings.json`.
 
-    Base de Données : SQL Server (configuré via LibraryManagerContext)
-
-    Sécurité : JWT (JSON Web Tokens) pour l'authentification et BCrypt pour le hachage des mots de passe
-
-    Documentation : Scalar / Swagger
-
-🛠️ Installation et Configuration
-Prérequis
-
-    SDK .NET 10.0
-
-    SQL Server
-
-Étapes
-
-    Cloner le dépôt :
-    Bash
-
-    git clone https://github.com/votre-repo/LibraryManager.git
-    cd LibraryManager
-
-    Configurer la base de données :
-    Mettez à jour la chaîne de connexion dans le fichier appsettings.json du projet LibraryManager.API.
-
-    Appliquer les migrations :
-    Bash
-
+3.  **Appliquer les migrations** :
+    ```bash
     dotnet ef database update --project LibraryManager.Infrastructure --startup-project LibraryManager.API
+    ```
 
-    Lancer l'application :
-    Bash
-
+4.  **Exécuter l'API** :
+    ```bash
     dotnet run --project LibraryManager.API
+    ```
 
-🛣️ Points de Terminaison (Endpoints) API
+## 🛣️ Liste des Endpoints (API)
 
-L'API est organisée autour de trois contrôleurs principaux :
-👤 Utilisateurs (/api/User)
-Méthode	Endpoint	Description	Accès
-POST	/Register	Créer un nouveau compte utilisateur	Public
-POST	/Login	Authentification et génération de token JWT	Public
-GET	/GetAll	Liste de tous les utilisateurs	Admin
-GET	/GetByEmail	Récupérer un utilisateur par son email	Authentifié
-PUT	/UpdateEmail	Modifier l'adresse email	Authentifié
-DELETE	/Delete	Supprimer un compte	Admin / Soi-même
-📖 Livres (/api/Livre)
-Méthode	Endpoint	Description	Accès
-GET	/GetAll	Liste de tous les livres	Public
-GET	/{id}	Détails d'un livre spécifique	Public
-POST	/Create	Ajouter un nouveau livre	Admin
-PUT	/Update/{id}	Modifier les informations d'un livre	Admin
-DELETE	/Delete/{id}	Supprimer un livre	Admin
-📑 Emprunts (/api/Emprunt)
-Méthode	Endpoint	Description	Accès
-GET	/GetAll	Historique de tous les emprunts	Admin
-POST	/Create	Enregistrer un nouvel emprunt	Authentifié
-PUT	/Return/{id}	Marquer un livre comme retourné	Authentifié
-🔒 Sécurité et Rôles
+### 👤 Gestion des Utilisateurs (`/api/User`)
+| Méthode | Point de terminaison | Description | Accès |
+| :--- | :--- | :--- | :--- |
+| **POST** | `/Register` | Inscription d'un nouvel utilisateur | Public |
+| **POST** | `/Login` | Connexion et récupération du Token JWT | Public |
+| **GET** | `/GetAll` | Liste tous les utilisateurs | Admin |
+| **GET** | `/GetByEmail` | Récupère les détails d'un utilisateur par email | Authentifié |
+| **PUT** | `/UpdateEmail` | Met à jour l'email de l'utilisateur connecté | Authentifié |
+| **DELETE** | `/Delete` | Supprime un compte utilisateur | Admin / Propriétaire |
 
-L'application utilise des rôles pour restreindre l'accès à certaines fonctionnalités :
+### 📖 Gestion des Livres (`/api/Livre`)
+| Méthode | Point de terminaison | Description | Accès |
+| :--- | :--- | :--- | :--- |
+| **GET** | `/GetAll` | Récupère la liste de tous les livres | Public |
+| **GET** | `/{id}` | Récupère un livre par son identifiant | Public |
+| **POST** | `/Create` | Ajoute un nouveau livre au catalogue | Admin |
+| **PUT** | `/Update/{id}` | Modifie les informations d'un livre | Admin |
+| **DELETE** | `/Delete/{id}` | Supprime un livre | Admin |
 
-    User : Peut consulter les livres et gérer ses propres emprunts.
+### 📑 Gestion des Emprunts (`/api/Emprunt`)
+| Méthode | Point de terminaison | Description | Accès |
+| :--- | :--- | :--- | :--- |
+| **GET** | `/GetAll` | Liste tous les emprunts enregistrés | Admin |
+| **POST** | `/Create` | Enregistre un nouvel emprunt (met à jour le statut du livre) | Authentifié |
+| **PUT** | `/Return/{id}` | Enregistre le retour d'un livre | Authentifié |
 
-    Admin : Possède tous les droits, y compris la gestion du catalogue de livres et des utilisateurs.
+## 🛡️ Fonctionnalités Clés
 
-📁 Structure des fichiers clés
+* **Gestion des Erreurs** : Un middleware global (`ExceptionMiddleware`) capture les erreurs et renvoie un format JSON standardisé.
+* **Validation Métier** : Utilisation d'une classe `Result<T>` pour gérer les succès et les échecs de manière explicite sans lever d'exceptions inutiles.
+* **Mapping** : Transformation manuelle et efficace des entités vers les DTOs via des classes de mapping dédiées.
+* **Sécurité** : Protection des routes sensibles via des politiques d'autorisation basées sur les rôles (`Admin`, `User`).
 
-    ExceptionMiddleware.cs : Gestion globale des erreurs pour des réponses API cohérentes.
-
-    JwtProvider.cs : Logique de création des tokens de sécurité.
-
-    LibraryManagerContext.cs : Configuration Fluent API pour le mapping SQL.
-
-    Result.cs : Objet générique pour encapsuler les réponses des services (Succès/Échec).
+## 📄 Licence
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
