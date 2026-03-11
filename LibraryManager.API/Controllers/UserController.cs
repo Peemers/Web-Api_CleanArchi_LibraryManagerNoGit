@@ -9,21 +9,22 @@ namespace LibraryManager.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UserController(IUserService userService, ILogger<UserController> logger) : ControllerBase //prim ctor
 {
-  private IUserService _userService;
-
-  public UserController(IUserService userService)
-  {
-    _userService = userService;
-  }
+  // private IUserService _userService;
+  //
+  // public UserController(IUserService userService)
+  // {
+  //   _userService = userService;
+  // } commenté pour le primary Ctor je garde pour l'exemple encore.
   
   [Authorize]
   [HttpGet ("GetUsers")]
   
   public async Task<ActionResult<IEnumerable<UserResponceDto>>> GetUsers()
   {
-    var usersDto = await _userService.GetAllAsync();
+    logger.LogInformation("Récupération de la liste de tous les utilisateurs");
+    var usersDto = await userService.GetAllAsync();
     return Ok(usersDto);
   }
 
@@ -31,10 +32,13 @@ public class UserController : ControllerBase
   [AllowAnonymous]
   public async Task<ActionResult<LoginResponceDto>> Login([FromBody] LoginRequestDto dto)
   {
-    Result<LoginResponceDto> result = await _userService.LoginAsync(dto);
+    logger.LogInformation("Tentative de cnnexion pour l'utilisateur : {Email}", dto.Email);
+    
+    Result<LoginResponceDto> result = await userService.LoginAsync(dto);
   
     if (!result.IsSuccess)
     {
+      logger.LogWarning("Echec de la connexion pour {Email} : {Reason}", dto.Email, result.ErrorMessage);
       return Unauthorized(result.ErrorMessage);
     }
   
@@ -45,9 +49,14 @@ public class UserController : ControllerBase
   [HttpGet("email/{email}")]
   public async Task<ActionResult<UserResponceDto>> GetByEmail(string email)
   {
-    var userDto = await _userService.GetByEmailAsync(email);
+    var userDto = await userService.GetByEmailAsync(email);
+
     if (userDto == null)
+    {
+      logger.LogWarning("Recherche par email : l'utilisateur {Email} n'existe pas", email);
       return NotFound();
+    }
+      
 
     return Ok(userDto);
   }
@@ -55,7 +64,8 @@ public class UserController : ControllerBase
   [HttpPost ("CreateUser")]
   public async Task<ActionResult<UserResponceDto>> CreateUser([FromBody] RegisterRequestDto dto)
   {
-    var userDto = await _userService.CreateByDtoAsync(dto);
+    var userDto = await userService.CreateByDtoAsync(dto);
+    logger.LogInformation("Nouvel utilisateur créé avec l'id : {UserId} et l'email : {Email}", userDto.Id, userDto.Email);
     return CreatedAtAction(
       nameof(GetByEmail),
       new { email = userDto.Email },
@@ -69,7 +79,7 @@ public class UserController : ControllerBase
     if (dto == null || string.IsNullOrWhiteSpace(dto.Email))
       return BadRequest("L'email ne peut pas être vide.");
 
-    var userDto = await _userService.UpdateEmailAsync(id, dto.Email);
+    var userDto = await userService.UpdateEmailAsync(id, dto.Email);
     return Ok(userDto);
   }
 }

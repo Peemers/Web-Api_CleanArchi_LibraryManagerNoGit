@@ -90,7 +90,7 @@ try
   //middleware Logging (aavant le routing)
   app.UseSerilogRequestLogging(options =>
   {
-    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms}";
+    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms}"; 
   });
 
   if (app.Environment.IsDevelopment())
