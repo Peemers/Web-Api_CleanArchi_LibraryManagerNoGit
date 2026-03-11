@@ -67,6 +67,8 @@ try
   builder.Services.AddOpenApi();
   builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
   builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+  
+  //service token
   builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -90,7 +92,7 @@ try
   //middleware Logging (aavant le routing)
   app.UseSerilogRequestLogging(options =>
   {
-    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms}"; 
+    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms"; 
   });
 
   if (app.Environment.IsDevelopment())
