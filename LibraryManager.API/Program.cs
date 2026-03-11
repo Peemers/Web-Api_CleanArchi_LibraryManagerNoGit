@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Core;
-using Serilog.Events; // Vérifie que LivreService est bien ici
+using Serilog.Events;
 
 
 Log.Logger = new LoggerConfiguration() //creation du loger avant tout le reste

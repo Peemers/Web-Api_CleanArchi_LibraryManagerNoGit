@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-//refaire la factory sans ia
+//factory proposee par ia explication syntetisée dans le obsidian "FactoryContext"
 
 namespace LibraryManager.Infrastructure.DataBase;
 
