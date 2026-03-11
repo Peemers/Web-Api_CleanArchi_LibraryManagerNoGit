@@ -8,7 +8,6 @@ using LibraryManager.Core.Mappers;
 using LibraryManager.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace LibraryManager.API.Controllers;
 [ApiController]
@@ -32,20 +31,20 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
 
   [HttpPost("PostLivre")]
   [Authorize(Roles = "Admin")]
-  public async Task<IActionResult>? PostLivre(LivreRequestDTO dto)
+  public async Task<ActionResult<LivreResponceDto>> PostLivre([FromBody] LivreRequestDTO dto)
   {
-    // appelle de la méthode que l'on a crée spécifiquement pour les DTO
     var livreCree = await livreService.CreateFromDtoAsync(dto);
-
-    // On renvoie un DTO de réponse, pas l'entité brute
+    
+    logger.LogInformation("Livre {nom} cree avec succès (ID:{Id})", livreCree.Nom, livreCree.Id);
     return CreatedAtAction(
       nameof(GetById),
-      new {id = livreCree.Id},
+      new { id = livreCree.Nom },
       livreCree.ToResponseDto()
-    );
+      //CreatedAtAction (201)created, renvoi l'url de l'objet cree dans le header
+      );
   }
 
-  [HttpGet("GetBy{id}")]
+  [HttpGet("{id}")]
   [Authorize]
   public async Task<IActionResult> GetById(Guid id)
   {
@@ -57,7 +56,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
     return Ok(livre);
   }
 
-  [HttpPut("{id} Update")]
+  [HttpPut("{id}")]
   [Authorize(Roles =  "Admin")]
   public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] LivreRequestDTO dto)
   {
@@ -79,7 +78,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
     return NoContent();
   }
 
-  [HttpDelete("DeleteBy{id}")]
+  [HttpDelete("{id}")]
   [Authorize(Roles = "Admin")]
   public async Task<IActionResult> DeleteAsync(Guid id)
   {
