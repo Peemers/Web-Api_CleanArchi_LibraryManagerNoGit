@@ -8,6 +8,7 @@ using LibraryManager.Core.Mappers;
 using LibraryManager.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace LibraryManager.API.Controllers;
 [ApiController]
@@ -33,7 +34,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
   [Authorize(Roles = "Admin")]
   public async Task<IActionResult>? PostLivre(LivreRequestDTO dto)
   {
-    // appelle de la méthode que l'on a créée spécifiquement pour les DTO
+    // appelle de la méthode que l'on a crée spécifiquement pour les DTO
     var livreCree = await livreService.CreateFromDtoAsync(dto);
 
     // On renvoie un DTO de réponse, pas l'entité brute
@@ -57,11 +58,16 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
   }
 
   [HttpPut("{id}")]
-  [Authorize]
+  [Authorize(Roles =  "Admin")]
   public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] LivreRequestDTO dto)
   {
+    logger.LogWarning("Récupération de la liste de livres existants");
     Livre? livreExist = await livreService.GetByIdAsync(id);
-    if (livreExist == null) return NotFound("Livre introuvable");
+    if (livreExist == null)
+    {
+      logger.LogWarning($"Tentative de modification du livre : {id} par, Résultat : non trouvé");
+      return NotFound("Livre introuvable");
+    }
     
     livreExist.Nom =  dto.Nom;
     livreExist.Auteur = dto.Auteur;
@@ -69,6 +75,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
     livreExist.DateDeSortie = dto.DateDeSortie;
     
     await livreService.UpdateAsync(livreExist);
+    logger.LogWarning($"Modification du livre {id} reussie");
     return NoContent();
   }
 
