@@ -1,106 +1,84 @@
-LibraryManager est une solution de gestion de bibliothèque moderne développée en C# / .NET 10.0. Le projet a été conçu avec une attention particulière portée à la Clean Architecture (ou Architecture Hexagonale), garantissant que la logique métier reste isolée des frameworks, des bases de données et des interfaces externes.
-🏗️ Architecture de la Solution
+# 📚 LibraryManager API
 
-La solution est découpée en quatre projets distincts, chacun ayant une responsabilité précise :
-1. LibraryManager.Domain (Le Noyau)
+LibraryManager est une API de gestion de bibliothèque développée en **.NET 10.0**. Le projet suit les principes de la **Clean Architecture** pour garantir une séparation claire des responsabilités, une maintenance facilitée et une scalabilité optimale.
 
-C'est la couche la plus interne. Elle contient les objets métier fondamentaux sans aucune dépendance technique.
+## 🏗️ Architecture du Projet
 
-    Entities : Définition des modèles de données pivots comme Livre, User (Adhérent) et Emprunt.
+Le projet est découpé en 4 couches principales :
 
-    Enums : États de gestion tels que LivreStatut (Disponible, Emprunté) et UsersRoles.
+1.  **LibraryManager.API** : Couche de Présentation (Controllers, Middlewares, Configurations API).
+2.  **LibraryManager.Core** : Couche Application (Interfaces, Services, DTOs, Mappers, Logique métier).
+3.  **LibraryManager.Infrastructure** : Couche Data (DbContext, Repositories, Configurations EF Core).
+4.  **LibraryManager.Domain** : Couche Domaine (Entités de base, Enums).
 
-2. LibraryManager.Core (Logique Applicative)
+## 🚀 Technologies et Bibliothèques
 
-Cette couche orchestre les flux de données et contient les règles métier.
+* **Framework** : .NET 10.0
+* **ORM** : Entity Framework Core
+* **Base de Données** : SQL Server
+* **Sécurité** : 
+    * Authentification JWT (JSON Web Token)
+    * Hachage de mots de passe avec BCrypt
+* **Documentation** : Scalar (alternative moderne à Swagger)
+* **Pattern** : Repository Pattern & Dependency Injection
 
-    Interfaces : Définition des contrats pour les services (ILivreService) et les dépôts (ILivreRepository).
+## 🛠️ Installation et Lancement
 
-    Services : Implémentations de la logique (ex: validation d'un emprunt, calcul de dates).
+1.  **Clonage du dépôt** :
+    ```bash
+    git clone <url-du-repo>
+    cd Web-Api_CleanArchi_LibraryManager
+    ```
 
-    DTOs & Mappers : Objets de transfert pour l'API (Requests/Responses) et classes de conversion pour isoler les entités du domaine.
+2.  **Configuration de la base de données** :
+    Modifiez la chaîne de connexion `DefaultConnection` dans le fichier `LibraryManager.API/appsettings.json`.
 
-3. LibraryManager.Infrastructure (Détails Techniques)
+3.  **Appliquer les migrations** :
+    ```bash
+    dotnet ef database update --project LibraryManager.Infrastructure --startup-project LibraryManager.API
+    ```
 
-Cette couche gère la communication avec les outils externes.
+4.  **Exécuter l'API** :
+    ```bash
+    dotnet run --project LibraryManager.API
+    ```
 
-    Data Access : Utilisation d'Entity Framework Core pour la persistance.
+## 🛣️ Liste des Endpoints (API)
 
-    Repositories : Implémentations concrètes des accès aux données utilisant le LibraryManagerContext.
+### 👤 Gestion des Utilisateurs (`/api/User`)
+| Méthode | Point de terminaison | Description | Accès |
+| :--- | :--- | :--- | :--- |
+| **POST** | `/Register` | Inscription d'un nouvel utilisateur | Public |
+| **POST** | `/Login` | Connexion et récupération du Token JWT | Public |
+| **GET** | `/GetAll` | Liste tous les utilisateurs | Admin |
+| **GET** | `/GetByEmail` | Récupère les détails d'un utilisateur par email | Authentifié |
+| **PUT** | `/UpdateEmail` | Met à jour l'email de l'utilisateur connecté | Authentifié |
+| **DELETE** | `/Delete` | Supprime un compte utilisateur | Admin / Propriétaire |
 
-    Configuration : Mapping détaillé via Fluent API (LivreConfiguration, etc.) pour définir les contraintes SQL.
+### 📖 Gestion des Livres (`/api/Livre`)
+| Méthode | Point de terminaison | Description | Accès |
+| :--- | :--- | :--- | :--- |
+| **GET** | `/GetAll` | Récupère la liste de tous les livres | Public |
+| **GET** | `/{id}` | Récupère un livre par son identifiant | Public |
+| **POST** | `/Create` | Ajoute un nouveau livre au catalogue | Admin |
+| **PUT** | `/Update/{id}` | Modifie les informations d'un livre | Admin |
+| **DELETE** | `/Delete/{id}` | Supprime un livre | Admin |
 
-4. LibraryManager.API (Point d'Entrée)
+### 📑 Gestion des Emprunts (`/api/Emprunt`)
+| Méthode | Point de terminaison | Description | Accès |
+| :--- | :--- | :--- | :--- |
+| **GET** | `/GetAll` | Liste tous les emprunts enregistrés | Admin |
+| **POST** | `/Create` | Enregistre un nouvel emprunt (met à jour le statut du livre) | Authentifié |
+| **PUT** | `/Return/{id}` | Enregistre le retour d'un livre | Authentifié |
 
-La couche de présentation exposant les fonctionnalités via une interface RESTful.
+## 🛡️ Fonctionnalités Clés
 
-    Controllers : Points d'accès pour les livres et les utilisateurs.
+* **Gestion des Erreurs** : Un middleware global (`ExceptionMiddleware`) capture les erreurs et renvoie un format JSON standardisé.
+* **Validation Métier** : Utilisation d'une classe `Result<T>` pour gérer les succès et les échecs de manière explicite sans lever d'exceptions inutiles.
+* **Mapping** : Transformation manuelle et efficace des entités vers les DTOs via des classes de mapping dédiées.
+* **Sécurité** : Protection des routes sensibles via des politiques d'autorisation basées sur les rôles (`Admin`, `User`).
 
-    Middleware : Gestion centralisée des exceptions via ExceptionMiddleware.
+* Ce projet contient tous les secrets et string de connection etc mais rien n'est en ligne tout est local donc je me suis permis.
 
-    Configuration : Enregistrement des services et pipeline HTTP dans le Program.cs.
-
-🛠️ Stack Technique
-
-    Framework : .NET 10.0
-
-    Base de données : SQL Server (via EF Core)
-
-    Documentation : OpenAPI (Swagger) avec interface Scalar
-
-    Outils : Injection de dépendances native, Fluent API
-
-⚙️ Installation et Configuration
-Prérequis
-
-    .NET 10 SDK
-
-    SQL Server
-
-Configuration de la base de données
-
-    Ouvrez LibraryManager.API/appsettings.json.
-
-    Modifiez la chaîne de connexion Default selon votre instance SQL.
-
-Lancement
-Bash
-
-# Restaurer les packages NuGet
-dotnet restore
-
-# Lancer l'API
-dotnet run --project LibraryManager.API
-
-🚀 Fonctionnalités Implémentées & WIP
-Terminées ✅
-
-    Architecture multi-projets découplée.
-
-    Système d'injection de dépendances pour tous les services.
-
-    Modèles de données pour Livres, Utilisateurs et Emprunts.
-
-    Gestion globale des erreurs API.
-
-    Documentation interactive via Scalar (disponible en mode développement).
-
-En cours de développement (WIP) ⏳
-
-    Finalisation de la logique de validation des emprunts.
-
-    Mise en place complète des migrations de base de données.
-
-    Tests unitaires avec xUnit et Moq.
-
-🔗 Endpoints Principaux
-
-    Livres : GET /api/Livre (Liste), POST /api/Livre (Ajout).
-
-    Utilisateurs : POST /api/User/register (Inscription), POST /api/User/login (Connexion).
-
-    Santé : GET /test (Vérification de l'API).
-
-🤝 Contribution
-
-Le projet utilise les principes de la Clean Architecture. Toute contribution doit respecter la séparation des couches : ne jamais référencer l'Infrastructure dans le Domain ou le Core.
+## 📄 Licence
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.

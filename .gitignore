@@ -98,3 +98,28 @@
 #*.bak
 #*.old
 #*.swp
+#*
+#*
+#*GIT IGNORE POUR TF*/
+#
+
+# build
+bin/
+obj/
+
+# visual studio
+.vs/
+*.user
+*.suo
+
+# logs
+*.log
+
+# node (si Angular)
+node_modules/
+dist/
+
+# secrets locaux
+appsettings.Development.json
+.env
+appsettings.json
