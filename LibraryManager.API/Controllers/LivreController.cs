@@ -22,7 +22,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
   //   _livreService = livreService;
   // } Aussi commenté pour le prim ctor
 
-  [HttpGet]
+  [HttpGet("GetAll")]
   [AllowAnonymous]
   public async Task<ActionResult<IEnumerable<LivreResponceDto>>> GetLivres()
   {
@@ -30,7 +30,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
     return Ok(livres);
   }
 
-  [HttpPost]
+  [HttpPost("PostLivre")]
   [Authorize(Roles = "Admin")]
   public async Task<IActionResult>? PostLivre(LivreRequestDTO dto)
   {
@@ -45,7 +45,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
     );
   }
 
-  [HttpGet("{id}")]
+  [HttpGet("GetBy{id}")]
   [Authorize]
   public async Task<IActionResult> GetById(Guid id)
   {
@@ -57,7 +57,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
     return Ok(livre);
   }
 
-  [HttpPut("{id}")]
+  [HttpPut("{id} Update")]
   [Authorize(Roles =  "Admin")]
   public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] LivreRequestDTO dto)
   {
@@ -79,7 +79,7 @@ public class LivreController (ILivreService livreService, ILogger<LivreControlle
     return NoContent();
   }
 
-  [HttpDelete("{id}")]
+  [HttpDelete("DeleteBy{id}")]
   [Authorize(Roles = "Admin")]
   public async Task<IActionResult> DeleteAsync(Guid id)
   {
