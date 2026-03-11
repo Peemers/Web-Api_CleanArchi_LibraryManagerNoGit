@@ -92,7 +92,19 @@ try
   //middleware Logging (aavant le routing)
   app.UseSerilogRequestLogging(options =>
   {
-    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms"; 
+    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+    
+    //options.GetLevel, proposé par l'ia contre le bruit je dois me pencher dessus pour comprendre j'ai pris les explications que je synthétiserai
+    options.GetLevel = (httpContext, elapsed, ex) =>
+    {
+      var path = httpContext.Request.Path.Value ?? "";
+      if (path.Contains("/scalar") || path.Contains("/openapi"))
+      {
+        return Serilog.Events.LogEventLevel.Verbose; 
+      }
+      return Serilog.Events.LogEventLevel.Information;
+    };
+    //fin bloc ia
   });
 
   if (app.Environment.IsDevelopment())
