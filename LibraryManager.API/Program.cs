@@ -19,11 +19,20 @@ Log.Logger = new LoggerConfiguration() //creation du loger avant tout le reste
   .MinimumLevel.Override("Microsoft", LogEventLevel.Information) //le niveau d'info
   .Enrich.FromLogContext() //coontexte
   .WriteTo.Console() //ou ça va etre ecrit
-  .CreateBootstrapLogger();
+  .CreateBootstrapLogger(); //log de demarrage
 
 try
 {
+  //log demarrage
+  Log.Information("Démarrage du bouzin... Api_Library_Manager");
+  
   var builder = WebApplication.CreateBuilder(args);
+  
+  //remplacement du logging .net par serilog
+  builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext());
 
 //Base de données
   builder.Services.AddDbContext<LibraryManagerContext>(options =>
@@ -39,7 +48,8 @@ try
   builder.Services.AddScoped<IUserService, UserService>();
 
   var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
-  Console.WriteLine($"CORS configurés pour : {string.Join(", ", allowedOrigins ?? [])}");
+  
+  Console.WriteLine($"CORS configurés pour : {string.Join(", ", allowedOrigins ?? [])}"); // cors ok ?
 
   builder.Services.AddCors(options =>
   {
@@ -76,6 +86,13 @@ try
   var app = builder.Build();
 
 //Pipeline HTTP (Middleware)
+  
+  //middleware Logging (aavant le routing)
+  app.UseSerilogRequestLogging(options =>
+  {
+    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms}";
+  });
+
   if (app.Environment.IsDevelopment())
   {
     app.MapOpenApi(); //creation json
@@ -90,14 +107,16 @@ try
   app.MapGet("/test", () => "API OK");
 
 
-
+Log.Information("Le bouzin à démarrer - API prete !");
   app.Run();
 }
+//capture des erreurs, si pas de key ou de Cstrg
 catch (Exception ex)
 {
-
+Log.Fatal(ex, "Le bouzin n'a pas pu démarrer");
 }
 finally
 {
-  
+  //fermeture mais après écriture ?
+  Log.CloseAndFlush();
 }
